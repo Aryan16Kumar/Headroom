@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Headroom — know your AI headroom</title>
+  <meta name="description" content="A live, private quota gauge for claude.ai — and soon every AI you pay for. Nothing ever leaves your browser." />
+  <meta property="og:title" content="Headroom — know your AI headroom" />
+  <meta property="og:description" content="A live, private quota gauge for claude.ai. No accounts, no servers, no data leaving your browser." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f0e0c'/%3E%3Cpath d='M6 20 A10 10 0 0 1 26 20' fill='none' stroke='%23d97757' stroke-width='3.5' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='20' r='2.5' fill='%23e8e6e1'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="site-header" id="siteHeader">
+    <div class="nav">
+      <a class="logo" href="#top">
+        <svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M6 21 A10 10 0 0 1 26 21" fill="none" stroke="#d97757" stroke-width="3.5" stroke-linecap="round"/><circle cx="16" cy="21" r="2.5" fill="currentColor"/></svg>
+        Headroom
+      </a>
+      <nav>
+        <a href="#how">How it works</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#roadmap">Roadmap</a>
+        <!-- TODO: replace # with the real repository URL -->
+        <a class="nav-cta" href="#" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="pulse-dot"></span> v0 in development · design phase</p>
+        <h1>Know your <span class="grad">AI headroom.</span></h1>
+        <p class="lede">
+          A live, private quota gauge for claude.ai — and soon every AI you pay for.
+          See exactly how far you are from your 5-hour cooldown, before it sees you.
+        </p>
+        <div class="cta-row">
+          <!-- TODO: replace # with the real repository URL -->
+          <a class="btn btn-primary" href="#" rel="noopener">★ Follow on GitHub</a>
+          <a class="btn btn-ghost" href="#roadmap">See the roadmap ↓</a>
+        </div>
+        <p class="hero-foot">No account. No server. Nothing ever leaves your browser.</p>
+      </div>
+
+      <div class="hero-demo" aria-label="Animated preview of the Headroom badge on claude.ai">
+        <div class="window">
+          <div class="window-bar">
+            <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+            <span class="url">claude.ai</span>
+          </div>
+          <div class="window-body">
+            <div class="skel s1"></div>
+            <div class="skel s2 right"></div>
+            <div class="skel s3"></div>
+            <div class="skel s4"></div>
+            <div class="skel s5 right"></div>
+
+            <div class="pill" id="pill">
+              <div class="pill-row">
+                <span class="pill-label">5h</span>
+                <span class="bar"><span class="fill" id="fill5"></span></span>
+                <span class="pct" id="pct5">7%</span>
+                <span class="eta" id="eta5">4h 32m</span>
+              </div>
+              <div class="pill-row">
+                <span class="pill-label">7d</span>
+                <span class="bar"><span class="fill" id="fill7"></span></span>
+                <span class="pct" id="pct7">12%</span>
+                <span class="eta" id="eta7">5d 03h</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="demo-caption" id="caption">Plenty of headroom — keep going.</p>
+      </div>
+    </section>
+
+    <!-- ============ PROBLEM ============ -->
+    <section class="section" id="problem">
+      <p class="kicker reveal">The problem</p>
+      <h2 class="reveal">Your limits are real.<br/>Your visibility isn’t.</h2>
+      <p class="section-lede reveal">
+        claude.ai enforces a 5-hour and a 7-day rolling limit. You can check them — buried in a
+        settings page you’ll visit exactly twice. Headroom closes the gaps:
+      </p>
+      <div class="grid">
+        <div class="card reveal">
+          <div class="card-icon">◉</div>
+          <h3>Always in view</h3>
+          <p>A quiet floating gauge while you work — not three clicks away in settings.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon">⚠</div>
+          <h3>Before the wall</h3>
+          <p>Color thresholds tell you at a glance whether to keep going or pace yourself.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon">⏰</div>
+          <h3>Reset pings <span class="tag">v1</span></h3>
+          <p>Close the tab. Get notified the moment your cooldown ends.</p>
+        </div>
+        <div class="card reveal">
+          <div class="card-icon">∑</div>
+          <h3>Every provider <span class="tag">v2</span></h3>
+          <p>ChatGPT, Gemini, Claude Code — one consistent meter for everything you pay for.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="section" id="how">
+      <p class="kicker reveal">How it works</p>
+      <h2 class="reveal">The honest version.</h2>
+      <p class="section-lede reveal">
+        When you send a message, claude.ai’s own response stream ends with a quota event —
+        the same data its UI uses internally. Headroom simply makes it visible.
+      </p>
+      <ol class="steps">
+        <li class="reveal"><span class="step-num">1</span><div><h3>Observe</h3><p>A content script wraps the page’s <code>fetch</code> to watch responses. The original stream passes through untouched.</p></div></li>
+        <li class="reveal"><span class="step-num">2</span><div><h3>Extract</h3><p>The parser reads the <code>message_limit</code> event — and discards everything else. Your conversations are never stored or logged.</p></div></li>
+        <li class="reveal"><span class="step-num">3</span><div><h3>Store locally</h3><p>Snapshots live on your device only, with a 90-day cap. No backend exists.</p></div></li>
+        <li class="reveal"><span class="step-num">4</span><div><h3>Render</h3><p>A Shadow-DOM badge shows both windows, color-coded, with a live countdown to reset.</p></div></li>
+      </ol>
+    </section>
+
+    <!-- ============ PRIVACY ============ -->
+    <section class="section privacy" id="privacy">
+      <p class="kicker reveal">Privacy</p>
+      <h2 class="reveal">Nothing leaves<br/>your browser. <span class="grad">Ever.</span></h2>
+      <ul class="checks">
+        <li class="reveal">No backend — there is no server to send data to</li>
+        <li class="reveal">No telemetry, analytics, or crash reporting</li>
+        <li class="reveal">No account, no sign-up, no API keys</li>
+        <li class="reveal">Conversation content is never stored — quota numbers only</li>
+        <li class="reveal">Host access limited to claude.ai, nothing else</li>
+        <li class="reveal">Source-available — audit the code yourself</li>
+      </ul>
+      <p class="privacy-note reveal">Verifiable, not vibes — read the <a href="#">privacy policy</a> and the <a href="#">source</a>.</p>
+    </section>
+
+    <!-- ============ ROADMAP ============ -->
+    <section class="section" id="roadmap">
+      <p class="kicker reveal">Roadmap</p>
+      <h2 class="reveal">Shipping in the open.</h2>
+      <div class="timeline" id="timeline">
+        <div class="tl-progress" id="tlProgress"></div>
+
+        <div class="tl-item reveal">
+          <div class="tl-dot now"></div>
+          <div class="tl-body">
+            <h3>v0 — The claude.ai badge <span class="badge-status now">in development</span></h3>
+            <p>5-hour + 7-day gauge with countdowns. Local-only. Free forever.</p>
+          </div>
+        </div>
+        <div class="tl-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <h3>v1 — Notifications &amp; prediction <span class="badge-status pro">first paid tier</span></h3>
+            <p>Reset pings even when the tab is closed. “At this pace you hit the cap in ~40 min.” 30-day history, settings.</p>
+          </div>
+        </div>
+        <div class="tl-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <h3>v2 — Every provider</h3>
+            <p>ChatGPT and Gemini join the meter. One gauge for all your AI subscriptions.</p>
+          </div>
+        </div>
+        <div class="tl-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <h3>v3 — Claude Code &amp; CLI</h3>
+            <p>Terminal usage in the same view, via a small local agent. Browser + CLI, unified.</p>
+          </div>
+        </div>
+        <div class="tl-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <h3>v4 — Private sync</h3>
+            <p>Optional, end-to-end encrypted, off by default. You hold the key.</p>
+          </div>
+        </div>
+        <div class="tl-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-body">
+            <h3>v5 — API dashboards</h3>
+            <p>Paste your API key (stored locally), get per-model usage for the paid APIs.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FINAL CTA ============ -->
+    <section class="section final">
+      <h2 class="reveal">Be there when <span class="grad">v0 ships.</span></h2>
+      <p class="section-lede reveal">Star the repo to follow along — release notes, recon write-ups, and the v0 build the day it lands.</p>
+      <div class="cta-row center reveal">
+        <!-- TODO: replace # with the real repository URL -->
+        <a class="btn btn-primary" href="#" rel="noopener">★ Star on GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Headroom is an independent project — not affiliated with, endorsed by, or sponsored by Anthropic. “Claude” is a trademark of Anthropic, PBC.</p>
+    <p>Source-available under <a href="#">PolyForm Shield 1.0.0</a>. Working title — final name TBD.</p>
+    <p class="footer-flex">This page loads zero trackers, zero analytics, zero external requests. Just like the extension.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
