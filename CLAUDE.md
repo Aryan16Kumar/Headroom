@@ -229,13 +229,25 @@ data: {
 ```
 
 **What's reliable:**
-- `windows["5h"].utilization` (0–1 float, primary signal)
+- `windows["5h"].utilization` (primary signal). **Can exceed 1.0** — observed `1.04` when over the limit, so it's a usage *ratio*, not a clamped fraction. We clamp to `[0, 1]` for display (security invariant #2); the badge shows red 100% at/over the cap.
 - `windows["5h"].resets_at` (Unix epoch seconds)
 - Same shape for `windows["7d"]`
 
-**What's null when healthy** (probably populates near the limit — handle when seen, don't depend on):
-- Top-level `resetsAt`, `remaining`, `perModelLimit`
-- `windows.*.status` shifts to some non-`within_limit` string (exact value unconfirmed)
+**Over-limit shape — confirmed 2026-06-11** (captured on a free account at the 5h cap):
+```json
+"message_limit": {
+  "type": "exceeded_limit",
+  "resetsAt": 1781131800, "remaining": null, "perModelLimit": false,
+  "windows": {
+    "5h": { "status": "exceeded_limit", "resets_at": 1781131800, "utilization": 1.04, "surpassed_threshold": 1.0 },
+    "7d": { "status": "within_limit", "resets_at": 1781550000, "utilization": 0.09 }
+  }
+}
+```
+- The over-limit `status` / top-level `type` string is **`"exceeded_limit"`** (previously unconfirmed).
+- New field **`surpassed_threshold`** (e.g. `1.0`) appears on a window only when exceeded; we don't consume it in v0.
+- Top-level `resetsAt` **populates** when over the limit (was `null` when healthy); `remaining` stays `null`; `perModelLimit` becomes `false` (was `null`).
+- The completion request **still streams the `message_limit` event when blocked** — it does not fail-fast, so the fetch-patch path catches it normally.
 
 **No rate-limit headers exist.** Don't look there.
 
