@@ -201,6 +201,24 @@ h1 {
 }
 .btn-ghost:hover { border-color: var(--faint); transform: translateY(-2px); }
 
+/* coming-soon (disabled) CTAs while the repo is private */
+/*.soon { cursor: default; opacity: 0.72; }
+.btn.soon:hover { transform: none; box-shadow: none; }
+.nav-cta.soon:hover { border-color: var(--border); background: rgba(255, 255, 255, 0.02); }
+
+.soon-tag {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  border-radius: 99px;
+  padding: 1px 7px;
+  margin-left: 6px;
+  opacity: 0.75;
+  vertical-align: 1px;
+}*/
+
 .hero-foot { margin-top: 22px; font-size: 0.88rem; color: var(--faint); }
 
 /* ---------- hero demo window ---------- */

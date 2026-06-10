@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Headroom</title>
+  <meta name="description" content="Headroom's privacy policy. No data ever leaves your browser — no backend, no telemetry, no accounts." />
+  <meta name="robots" content="index,follow" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f0e0c'/%3E%3Cpath d='M6 20 A10 10 0 0 1 26 20' fill='none' stroke='%23d97757' stroke-width='3.5' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='20' r='2.5' fill='%23e8e6e1'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* prose page — scoped tweaks on top of the shared landing styles */
+    .doc { max-width: 720px; margin: 0 auto; padding: 64px 28px 96px; }
+    .doc-back { display: inline-flex; align-items: center; gap: 7px; font-size: 0.9rem; color: var(--muted); text-decoration: none; margin-bottom: 34px; }
+    .doc-back:hover { color: var(--text); }
+    .doc h1 { font-size: clamp(2rem, 4vw, 2.6rem); letter-spacing: -0.025em; margin-bottom: 14px; }
+    .doc .meta { color: var(--faint); font-size: 0.9rem; margin-bottom: 8px; }
+    .doc .intro { color: var(--muted); font-size: 1.06rem; margin: 24px 0 40px; }
+    .doc h2 { font-size: 1.25rem; letter-spacing: -0.015em; margin: 40px 0 14px; }
+    .doc p { color: var(--muted); margin-bottom: 14px; }
+    .doc ul { list-style: none; display: grid; gap: 10px; margin-bottom: 14px; }
+    .doc li { position: relative; padding-left: 26px; color: var(--muted); }
+    .doc li::before { content: "—"; position: absolute; left: 0; color: var(--accent); }
+    .doc strong { color: var(--text); font-weight: 600; }
+    .doc code { font-family: var(--mono); font-size: 0.85em; background: rgba(232,230,225,0.07); padding: 1px 6px; border-radius: 5px; }
+    .doc .updated { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--faint); }
+  </style>
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <main class="doc">
+    <a class="doc-back" href="index.html">← Back to Headroom</a>
+
+    <h1>Privacy Policy</h1>
+    <p class="meta"><strong>Effective date:</strong> 2026-06-10 (draft — pre-release)</p>
+    <p class="meta"><strong>Applies to:</strong> the Headroom browser extension (working title), v0.</p>
+
+    <p class="intro">This policy is intentionally short because the extension is intentionally simple: <strong>no data ever leaves your browser.</strong></p>
+
+    <h2>What Headroom processes</h2>
+    <p>When you send a message on claude.ai, the site's own response stream includes a <code>message_limit</code> event describing your current usage quota. Headroom reads <strong>only</strong> that event and keeps <strong>only</strong> this metadata:</p>
+    <ul>
+      <li>Utilization percentage for the 5-hour and 7-day windows (a number between 0 and 1)</li>
+      <li>The reset timestamp for each window</li>
+      <li>The window status string (e.g. <code>within_limit</code>)</li>
+      <li>The organization ID from the request URL (so data from multiple accounts isn't mixed)</li>
+      <li>A local timestamp of when the snapshot was taken</li>
+    </ul>
+
+    <h2>What Headroom never collects</h2>
+    <ul>
+      <li>Your conversations, prompts, or Claude's responses — the parser discards everything except the quota event</li>
+      <li>Your name, email, account details, or credentials</li>
+      <li>API keys</li>
+      <li>Browsing activity on any site other than claude.ai (the extension has no access to other sites)</li>
+      <li>Analytics, telemetry, crash reports, or usage statistics of any kind</li>
+    </ul>
+
+    <h2>Where data is stored</h2>
+    <p>All data stays on your device, scoped to your browser profile:</p>
+    <ul>
+      <li>The latest quota snapshot in <code>chrome.storage.local</code></li>
+      <li>Snapshot history in IndexedDB, automatically deleted after <strong>90 days</strong></li>
+    </ul>
+    <p>Uninstalling the extension removes this data.</p>
+
+    <h2>What is transmitted</h2>
+    <p>Nothing. Headroom has no backend, makes no network requests of its own, and requests host access only to <code>claude.ai</code> — solely to observe responses the page already receives.</p>
+
+    <h2>Permissions explained</h2>
+    <ul>
+      <li><code>storage</code> — to save quota snapshots locally</li>
+      <li>Host access to <code>https://claude.ai/*</code> — to run the content script that reads the quota event</li>
+    </ul>
+    <p>No other permissions are requested.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>Any future feature that would send data off your device (for example, optional cross-device sync) will be strictly opt-in, off by default, end-to-end encrypted, and announced in release notes with an updated version of this policy.</p>
+
+    <h2>Contact</h2>
+    <p>Reach out via the project's contact channel, published at launch.</p>
+
+    <p class="updated">Headroom is an independent project — not affiliated with, endorsed by, or sponsored by Anthropic. "Claude" is a trademark of Anthropic, PBC.</p>
+  </main>
+</body>
+</html>
