@@ -1,0 +1,141 @@
+/* Scoped to the badge's Shadow DOM — nothing here can leak onto claude.ai. */
+
+:host {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  /* Above page content, below claude.ai's modal layer (Tailwind z-50): when
+     a modal opens, we yield. */
+  z-index: 40;
+  pointer-events: none;
+}
+
+.pill {
+  pointer-events: auto;
+  box-sizing: border-box;
+  min-width: 200px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font: 12px/1.4 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-variant-numeric: tabular-nums;
+  color: #3d3d3a;
+  background: #fdfdfc;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+}
+
+.pill:active {
+  cursor: grabbing;
+}
+
+.pill:focus-visible {
+  outline: 2px solid #6a6a65;
+  outline-offset: 2px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.label {
+  width: 18px;
+  font-weight: 600;
+  color: #6e6e69;
+}
+
+.track {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.09);
+  overflow: hidden;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  border-radius: 2px;
+  width: 0;
+}
+
+.row.green .fill { background: #2f9e44; }
+.row.amber .fill { background: #e8a13c; }
+.row.red .fill { background: #d64545; }
+
+.pct {
+  width: 34px;
+  text-align: right;
+}
+
+.eta {
+  min-width: 52px;
+  text-align: right;
+  white-space: nowrap;
+  color: #6e6e69;
+}
+
+.row.reset .track,
+.row.reset .pct {
+  display: none;
+}
+
+.row.reset .eta {
+  flex: 1;
+  font-style: italic;
+}
+
+.hint {
+  display: none;
+  font-size: 10px;
+  text-align: right;
+  color: #8a8a84;
+}
+
+.hint.visible {
+  display: block;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-color-scheme: dark) {
+  .pill {
+    color: #e8e8e5;
+    background: #262624;
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  }
+
+  .label,
+  .eta {
+    color: #a5a59e;
+  }
+
+  .track {
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .hint {
+    color: #8a8a84;
+  }
+
+  .pill:focus-visible {
+    outline-color: #a5a59e;
+  }
+}

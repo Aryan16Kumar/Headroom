@@ -152,6 +152,9 @@ tracker/
 │   │   └── constants.js          # endpoint regexes, color thresholds
 │   └── styles/
 │       └── badge.css             # scoped to Shadow DOM
+├── tests/
+│   ├── sse-parser.test.js        # node:test; run with: node --test "tests/*.test.js"
+│   └── time.test.js
 ├── site/                         # marketing landing page (static, zero deps, GitHub Pages-ready)
 │   ├── index.html
 │   ├── style.css

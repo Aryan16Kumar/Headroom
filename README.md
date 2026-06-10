@@ -4,7 +4,7 @@
 
 *Working title — see [Naming](#naming) below. Headroom is an independent project, not affiliated with, endorsed by, or sponsored by Anthropic.*
 
-![status: design phase](https://img.shields.io/badge/status-design%20phase-orange)
+![status: v0 in development](https://img.shields.io/badge/status-v0%20in%20development-orange)
 ![license: PolyForm Shield 1.0.0](https://img.shields.io/badge/license-PolyForm%20Shield%201.0.0-blue)
 ![manifest: v3](https://img.shields.io/badge/manifest-v3-green)
 
@@ -42,7 +42,14 @@ That's it for v0. No accounts, no settings to wrestle with, no surprise modals.
 
 ## Status
 
-🚧 **Design phase — there is no installable build yet.** This repo currently contains the project's design docs (architecture, security invariants, roadmap). Star or watch the repo; this section becomes install instructions the day v0 ships.
+🚧 **v0 in development — not yet on the Chrome Web Store.** The extension works and can be loaded unpacked if you want to try it early:
+
+1. Clone this repo
+2. Open `chrome://extensions`, enable **Developer mode**
+3. Click **Load unpacked** and select the repo folder
+4. Open [claude.ai](https://claude.ai) and send a message — the badge appears bottom-right
+
+Requires Chrome 111+. This section becomes one-click install instructions when v0 ships to the store.
 
 ---
 

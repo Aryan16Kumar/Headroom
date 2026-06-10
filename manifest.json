@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Headroom",
+  "version": "0.1.0",
+  "description": "A live, private usage gauge for claude.ai's 5-hour and 7-day limits. Everything stays in your browser. Not affiliated with Anthropic.",
+  "minimum_chrome_version": "111",
+  "permissions": ["storage"],
+  "host_permissions": ["https://claude.ai/*"],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["src/lib/sse-parser.js", "src/content/fetch-patch.js"],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": [
+        "src/lib/constants.js",
+        "src/lib/time.js",
+        "src/lib/storage.js",
+        "src/content/injector.js",
+        "src/content/badge.js"
+      ],
+      "run_at": "document_start",
+      "world": "ISOLATED"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["src/styles/badge.css"],
+      "matches": ["https://claude.ai/*"]
+    }
+  ],
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}
