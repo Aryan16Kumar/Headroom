@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Headroom — OG image template (1200×630)</title>
+  <!--
+    Export target: site/og.png (1200×630).
+    This file is a STILL frame for social cards — not part of the live site.
+    Render at exactly 1200×630 and screenshot the .og element.
+      • Chrome DevTools: device toolbar → responsive → 1200×630 → capture node screenshot
+      • or any html-to-image tool pointed at .og
+    Fonts/colors are copied verbatim from style.css so the card matches the page.
+  -->
+  <style>
+    :root {
+      --bg: #0f0e0c;
+      --surface: #16140f;
+      --surface-2: #1c1914;
+      --border: rgba(232, 230, 225, 0.09);
+      --text: #e8e6e1;
+      --muted: #a39f95;
+      --faint: #6f6b62;
+      --accent: #d97757;
+      --accent-soft: rgba(217, 119, 87, 0.14);
+      --green: #5fd38a;
+      --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --mono: ui-monospace, "Cascadia Code", "SF Mono", Consolas, monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      font-family: var(--font);
+    }
+
+    /* The exact 1200×630 card. Screenshot THIS node. */
+    .og {
+      position: relative;
+      width: 1200px;
+      height: 630px;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 72px 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* warm radial glow, same recipe as the site's .glow */
+    .og::before {
+      content: "";
+      position: absolute;
+      width: 900px; height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(217, 119, 87, 0.10) 0%, transparent 62%);
+      top: -120px; right: -180px;
+      pointer-events: none;
+    }
+
+    .og > * { position: relative; z-index: 1; }
+
+    /* ---- top: brand row ---- */
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .brand-mark {
+      width: 56px; height: 56px;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+    }
+    .brand-name {
+      font-size: 1.9rem;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+    }
+    .eyebrow {
+      margin-left: auto;
+      font-size: 0.95rem;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      padding: 9px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    /* ---- middle: headline ---- */
+    .headline { max-width: 760px; }
+    h1 {
+      font-size: 4.6rem;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      font-weight: 700;
+    }
+    .grad {
+      background: linear-gradient(100deg, #f3c9a8 0%, var(--accent) 55%, #b85c3e 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lede {
+      margin-top: 26px;
+      font-size: 1.5rem;
+      line-height: 1.45;
+      color: var(--muted);
+      max-width: 620px;
+    }
+
+    /* ---- bottom: meta + mini badge ---- */
+    .foot {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .foot-note {
+      font-size: 1.1rem;
+      color: var(--faint);
+    }
+
+    /* mini badge — echoes the hero pill */
+    .pill {
+      background: rgba(22, 20, 15, 0.92);
+      border: 1px solid rgba(232, 230, 225, 0.14);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 18px 48px -10px rgba(0, 0, 0, 0.6);
+    }
+    .pill-row {
+      display: grid;
+      grid-template-columns: 30px 150px 52px;
+      align-items: center;
+      gap: 14px;
+      font-family: var(--mono);
+      font-size: 1.05rem;
+    }
+    .pill-label { color: var(--faint); }
+    .bar {
+      height: 9px;
+      border-radius: 5px;
+      background: rgba(232, 230, 225, 0.1);
+      overflow: hidden;
+    }
+    .fill { display: block; height: 100%; border-radius: 5px; }
+    .fill.g { width: 7%; background: var(--green); }
+    .fill.a { width: 12%; background: var(--green); }
+    .pct { color: var(--text); text-align: right; }
+  </style>
+</head>
+<body>
+  <div class="og">
+    <!-- top -->
+    <div class="brand">
+      <span class="brand-mark">
+        <svg width="34" height="34" viewBox="0 0 32 32" aria-hidden="true">
+          <path d="M6 21 A10 10 0 0 1 26 21" fill="none" stroke="#d97757" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="16" cy="21" r="2.5" fill="#e8e6e1"/>
+        </svg>
+      </span>
+      <span class="brand-name">Headroom</span>
+      <span class="eyebrow"><span class="dot"></span> v0 in development</span>
+    </div>
+
+    <!-- middle -->
+    <div class="headline">
+      <h1>Know your <span class="grad">AI headroom.</span></h1>
+      <p class="lede">A live, private quota gauge for claude.ai — and soon every AI you pay for.</p>
+    </div>
+
+    <!-- bottom -->
+    <div class="foot">
+      <p class="foot-note">No account · No server · Nothing ever leaves your browser.</p>
+      <div class="pill">
+        <div class="pill-row">
+          <span class="pill-label">5h</span>
+          <span class="bar"><span class="fill g"></span></span>
+          <span class="pct">7%</span>
+        </div>
+        <div class="pill-row">
+          <span class="pill-label">7d</span>
+          <span class="bar"><span class="fill a"></span></span>
+          <span class="pct">12%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
