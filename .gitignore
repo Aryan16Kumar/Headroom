@@ -1,0 +1,20 @@
+# Internal tooling / generated artifacts — keep out of the public repo
+.kiro/
+graphify-out/
+
+# Build / distribution artifacts
+*.zip
+dist/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/
+
+# Dependency / env
+node_modules/
+.env
+.env.*

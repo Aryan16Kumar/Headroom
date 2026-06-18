@@ -4,7 +4,7 @@
 
 *Working title — see [Naming](#naming) below. Headroom is an independent project, not affiliated with, endorsed by, or sponsored by Anthropic.*
 
-![status: v0 in development](https://img.shields.io/badge/status-v0%20in%20development-orange)
+![status: v0 available](https://img.shields.io/badge/status-v0%20available-brightgreen)
 ![license: PolyForm Shield 1.0.0](https://img.shields.io/badge/license-PolyForm%20Shield%201.0.0-blue)
 ![manifest: v3](https://img.shields.io/badge/manifest-v3-green)
 
@@ -42,14 +42,19 @@ That's it for v0. No accounts, no settings to wrestle with, no surprise modals.
 
 ## Status
 
-🚧 **v0 in development — not yet on the Chrome Web Store.** The extension works and can be loaded unpacked if you want to try it early:
+**v0 is available now** — not yet on the Chrome Web Store, but you can install it in under a minute by loading it unpacked.
 
-1. Clone this repo
-2. Open `chrome://extensions`, enable **Developer mode**
-3. Click **Load unpacked** and select the repo folder
-4. Open [claude.ai](https://claude.ai) and send a message — the badge appears bottom-right
+**Easiest — the packaged build:**
 
-Requires Chrome 111+. This section becomes one-click install instructions when v0 ships to the store.
+1. Download [`headroom-v0.1.0.zip`](https://github.com/Aryan16Kumar/Headroom/releases/download/v0.1.0/headroom-v0.1.0.zip) from the [latest release](https://github.com/Aryan16Kumar/Headroom/releases)
+2. Unzip it — Chrome can't load a `.zip` directly
+3. Open `chrome://extensions`, enable **Developer mode**
+4. Click **Load unpacked** and select the unzipped `headroom-v0.1.0` folder
+5. Open [claude.ai](https://claude.ai) and send a message — the badge appears bottom-right
+
+**Or from source:** clone this repo and **Load unpacked** the repo folder directly.
+
+Requires Chrome 111+ (or any Chromium browser — Edge, Brave, Arc). Full walkthrough with screenshots: [getheadroom.vercel.app/install.html](https://getheadroom.vercel.app/install.html).
 
 ---
 

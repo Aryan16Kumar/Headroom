@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Install Headroom — load unpacked in Chrome</title>
+  <meta name="description" content="Install the Headroom extension in under a minute: download the zip, unzip it, and load it unpacked in Chrome. No Chrome Web Store needed." />
+  <meta name="robots" content="index,follow" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f0e0c'/%3E%3Cpath d='M6 20 A10 10 0 0 1 26 20' fill='none' stroke='%23d97757' stroke-width='3.5' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='20' r='2.5' fill='%23e8e6e1'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* prose page — scoped tweaks on top of the shared landing styles */
+    .doc { max-width: 720px; margin: 0 auto; padding: 64px 28px 96px; }
+    .doc-back { display: inline-flex; align-items: center; gap: 7px; font-size: 0.9rem; color: var(--muted); text-decoration: none; margin-bottom: 34px; }
+    .doc-back:hover { color: var(--text); }
+    .doc h1 { font-size: clamp(2rem, 4vw, 2.6rem); letter-spacing: -0.025em; margin-bottom: 14px; }
+    .doc .meta { color: var(--faint); font-size: 0.9rem; margin-bottom: 8px; }
+    .doc .intro { color: var(--muted); font-size: 1.06rem; margin: 24px 0 32px; }
+    .doc h2 { font-size: 1.25rem; letter-spacing: -0.015em; margin: 44px 0 14px; }
+    .doc p { color: var(--muted); margin-bottom: 14px; }
+    .doc strong { color: var(--text); font-weight: 600; }
+    .doc a.inline { color: var(--accent); text-decoration: none; border-bottom: 1px solid rgba(217,119,87,0.4); }
+    .doc a.inline:hover { border-bottom-color: var(--accent); }
+    .doc code { font-family: var(--mono); font-size: 0.85em; background: rgba(232,230,225,0.07); padding: 1px 6px; border-radius: 5px; color: var(--text); }
+
+    /* download band */
+    .dl-band { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; margin: 8px 0 8px; padding: 22px 24px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); }
+    .dl-band .dl-meta { font-size: 0.85rem; color: var(--faint); }
+    .dl-band .dl-meta strong { display: block; font-size: 0.97rem; color: var(--text); margin-bottom: 2px; }
+
+    /* numbered steps */
+    .install-steps { list-style: none; counter-reset: step; display: grid; gap: 18px; margin: 18px 0 8px; }
+    .install-steps li { position: relative; padding-left: 52px; counter-increment: step; }
+    .install-steps li::before { content: counter(step); position: absolute; left: 0; top: -2px; width: 34px; height: 34px; display: grid; place-items: center; border-radius: 9px; background: var(--accent-soft); color: var(--accent); font-weight: 640; font-size: 0.95rem; }
+    .install-steps h3 { font-size: 1.02rem; color: var(--text); margin-bottom: 4px; letter-spacing: -0.01em; }
+    .install-steps p { margin-bottom: 0; }
+
+    /* callout note */
+    .note { margin: 16px 0; padding: 14px 18px; border-left: 2px solid var(--amber); background: rgba(240,179,66,0.06); border-radius: 0 8px 8px 0; }
+    .note p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+    .note p + p { margin-top: 8px; }
+    .note strong { color: var(--text); }
+
+    .doc .closing { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 0.88rem; color: var(--faint); }
+  </style>
+</head>
+<body>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <main class="doc">
+    <a class="doc-back" href="index.html">← Back to Headroom</a>
+
+    <h1>Install Headroom</h1>
+    <p class="meta"><strong>Version:</strong> v0.1.0 · <strong>Requires:</strong> Chrome 111+ (or any Chromium browser — Edge, Brave, Arc)</p>
+
+    <p class="intro">Headroom isn't on the Chrome Web Store yet, so for now you install it by loading it
+      <strong>unpacked</strong> — Chrome's built-in way to run an extension straight from a folder. It takes about a minute.</p>
+
+    <div class="dl-band">
+      <a class="btn btn-primary" href="https://github.com/Aryan16Kumar/Headroom/releases/download/v0.1.0/headroom-v0.1.0.zip">Download headroom-v0.1.0.zip ↓</a>
+      <span class="dl-meta"><strong>~15 KB</strong>Source-available · audit it on <a class="inline" href="https://github.com/Aryan16Kumar/Headroom" target="_blank" rel="noopener">GitHub</a></span>
+    </div>
+
+    <h2>Step by step</h2>
+    <ol class="install-steps">
+      <li>
+        <h3>Download the zip</h3>
+        <p>Grab <code>headroom-v0.1.0.zip</code> using the button above.</p>
+      </li>
+      <li>
+        <h3>Unzip it</h3>
+        <p>Chrome can't load a <code>.zip</code> directly — you have to extract it first. On Windows, right-click the file → <strong>Extract All</strong>. On macOS, double-click it. You'll get a folder named <code>headroom-v0.1.0</code> containing <code>manifest.json</code>.</p>
+      </li>
+      <li>
+        <h3>Open the extensions page</h3>
+        <p>Type <code>chrome://extensions</code> into your address bar and press Enter.</p>
+      </li>
+      <li>
+        <h3>Turn on Developer mode</h3>
+        <p>Flip the <strong>Developer mode</strong> toggle in the top-right corner of that page.</p>
+      </li>
+      <li>
+        <h3>Load unpacked</h3>
+        <p>Click <strong>Load unpacked</strong>, then select the unzipped <code>headroom-v0.1.0</code> folder — the one that contains <code>manifest.json</code>. Headroom now appears in your extensions list.</p>
+      </li>
+      <li>
+        <h3>Try it</h3>
+        <p>Open <a class="inline" href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> and send a message. The headroom badge appears in the bottom-right, showing your 5-hour and 7-day usage.</p>
+      </li>
+    </ol>
+
+    <div class="note">
+      <p><strong>Seeing a "Developer mode extensions" warning?</strong> That's normal for any unpacked extension and isn't an error — it goes away once Headroom ships to the Chrome Web Store. The code is source-available, so you can read exactly what it does first.</p>
+      <p><strong>Updating later:</strong> download the newer zip, unzip it, and on <code>chrome://extensions</code> either click the refresh ↻ icon on the Headroom card or remove it and load the new folder.</p>
+    </div>
+
+    <h2>Is it safe?</h2>
+    <p>Headroom has no backend, makes no network requests of its own, and only ever reads the quota event claude.ai already sends to your browser. Nothing leaves your device. The full details are in the <a class="inline" href="privacy.html">privacy policy</a>, and every line is auditable on <a class="inline" href="https://github.com/Aryan16Kumar/Headroom" target="_blank" rel="noopener">GitHub</a>.</p>
+
+    <p class="closing">Headroom is an independent project — not affiliated with, endorsed by, or sponsored by Anthropic. "Claude" is a trademark of Anthropic, PBC.</p>
+  </main>
+</body>
+</html>
