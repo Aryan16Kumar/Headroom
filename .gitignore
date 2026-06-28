@@ -1,6 +1,7 @@
 # Internal tooling / generated artifacts — keep out of the public repo
 .kiro/
 graphify-out/
+KNOWN_ISSUES.md
 
 # Build / distribution artifacts
 *.zip
