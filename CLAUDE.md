@@ -50,11 +50,11 @@ This file is loaded into every Claude Code session in this directory. It is the 
 ### v1 — Notifications, prediction, history (first paid tier)
 
 The features no free competitor does well — and the actual reasons users would pay:
-- **Reset notifications** — "ping me when my cooldown ends," plus a toolbar badge (`chrome.action`) that works even when the user is not on claude.ai. The single most-requested behavior in limit-complaint threads; the floating badge only helps while the user is staring at claude.ai.
-- **Pace prediction** — "at your current rate you'll hit the 5h cap in ~40 minutes," powered by the IndexedDB time-series v0 is already collecting. This is where the history data stops being dead weight and becomes the moat.
+- **Reset notifications — shipped.** One `chrome.alarms` alarm per org+window, scheduled from the snapshots already in `chrome.storage.local`, fires a `chrome.notifications` ping when a cooldown ends; a `chrome.action` toolbar badge shows the window closest to its cap on every tab. Rules that keep it from becoming noise: only windows last seen at ≥ 85% utilization (or with a non-`within_limit` status) get an alarm at all; a ping more than 30 minutes late (browser was closed) is suppressed rather than claiming "just reset"; each `resets_at` is announced at most once, tracked in the `notifyState` storage key. Decision logic lives in `lib/alerts.js` as pure functions so it's unit-tested; `background/service-worker.js` is only wiring. Off switch: `settings.resetNotifications` (read today, surfaced in the settings panel below).
+- **Burn rate** — a descriptive readout from the IndexedDB time-series ("last hour: +22%", "~3% per message lately"). Deliberately *not* a time-to-cap ETA: usage is bursty and v0 only samples on send, so a confident forecast would be wrong often — see V1_PLAN.md Decision 1.
 - Basic history chart (last 30 days)
 - Settings panel (badge position, color thresholds, notification rules, clear-history action)
-- Payments plumbing: Chrome Web Store has no native billing — ExtensionPay or Stripe + license key. Free tier = the badge; paid = everything in this section.
+- Payments plumbing: Chrome Web Store has no native billing — Stripe Checkout plus a locally verified signed license key (not ExtensionPay: it phones home and stores emails third-party). Free tier = the badge; paid = everything in this section. `lib/licensing.js` will be the *only* module allowed to make a network request — see V1_PLAN.md Decision 2.
 
 ### v2 — Multi-provider consumer chat tracking
 
@@ -125,7 +125,12 @@ Non-negotiable. Violating any of these is a release blocker.
 4. **Snapshots are schema-versioned and org-keyed.** `{ v: 1, orgId, ... }`. Versioning makes future migrations possible; org keying prevents mixing data when a user belongs to multiple orgs/accounts.
 5. **Retention is bounded.** IndexedDB history capped at 90 days, pruned on write. A user-facing "clear history" action ships with the settings panel (v1).
 6. **Multi-tab consistency.** All open claude.ai tabs converge on the latest snapshot via `chrome.storage.onChanged`.
-7. **Minimal permissions, forever.** `storage` plus `host_permissions: ["https://claude.ai/*"]`. Nothing else without a written rationale in this file. This is both the trust story and what gets us through Chrome Web Store review (extensions intercepting third-party traffic get extra scrutiny).
+7. **Minimal permissions, forever.** Current set: `storage`, `alarms`, `notifications`, `host_permissions: ["https://claude.ai/*"]`. Nothing else without a written rationale here. This is both the trust story and what gets us through Chrome Web Store review (extensions intercepting third-party traffic get extra scrutiny). Rationale per permission:
+   - `storage` — quota snapshots, badge position, settings. Local only.
+   - `alarms` (v1) — wake the service worker at a window's `resets_at`. MV3 workers are killed aggressively, so `setTimeout` cannot survive long enough. No network, no data movement.
+   - `notifications` (v1) — the reset ping itself. Content is generated locally from the stored snapshot; nothing is fetched to build it.
+   - Host access to `claude.ai` also covers `chrome.tabs.query({ url: 'https://claude.ai/*' })`, which is how a notification/toolbar click focuses an existing tab — that's why the broad `tabs` permission is *not* requested.
+8. **The service worker reads, it does not reach out.** `background/service-worker.js` may read `chrome.storage.local` and call `chrome.alarms` / `chrome.notifications` / `chrome.action` / `chrome.tabs`. It must never contain `fetch(` or `XMLHttpRequest` — when licensing lands, `lib/licensing.js` is the single audited network boundary (V1_PLAN.md Decision 2). Grepping the repo for `fetch(` should only ever find the claude.ai stream observer and that one module.
 
 ---
 
@@ -138,9 +143,11 @@ tracker/
 ├── README.md                     # public-facing
 ├── LICENSE.md                    # PolyForm Shield 1.0.0 (source-available)
 ├── PRIVACY.md                    # standalone privacy policy (required for CWS listing)
+├── V1_PLAN.md                    # v1 scope/privacy decisions taken during dogfooding
+├── KNOWN_ISSUES.md               # dogfooding findings not yet scheduled
 ├── src/
 │   ├── background/
-│   │   └── service-worker.js     # MV3 service worker (mostly idle in v0)
+│   │   └── service-worker.js     # MV3 worker: reset alarms, notifications, toolbar badge
 │   ├── content/
 │   │   ├── injector.js           # ISOLATED world; bridges page ↔ extension
 │   │   ├── fetch-patch.js        # MAIN world; patches window.fetch
@@ -148,12 +155,14 @@ tracker/
 │   ├── lib/
 │   │   ├── storage.js            # chrome.storage + IndexedDB facade
 │   │   ├── sse-parser.js         # extracts message_limit from SSE chunks
+│   │   ├── alerts.js             # pure logic: alarm scheduling, notify rules, toolbar state
 │   │   ├── time.js               # countdown / format helpers
-│   │   └── constants.js          # endpoint regexes, color thresholds
+│   │   └── constants.js          # endpoint regexes, color thresholds, notify rules
 │   └── styles/
 │       └── badge.css             # scoped to Shadow DOM
 ├── tests/
 │   ├── sse-parser.test.js        # node:test; run with: node --test "tests/*.test.js"
+│   ├── alerts.test.js
 │   └── time.test.js
 ├── site/                         # marketing landing page (static, zero deps, GitHub Pages-ready)
 │   ├── index.html
@@ -190,6 +199,10 @@ Same thresholds for both windows. If they need tuning later, surface in settings
 Outside the under-5-min band, refresh the countdown every 30 seconds — it's cheap and keeps the badge accurate without burning CPU.
 
 **Staleness.** Utilization data refreshes only when the user sends a message — the badge can silently go stale. If the latest snapshot is older than 5 minutes, show an "as of Xm ago" hint on the pill. If a window's `resets_at` has passed, don't extrapolate to 0% — show that row in a neutral "reset — send a message to refresh" state. Never present old data as current.
+
+**Toolbar badge (v1).** `chrome.action` badge text is the utilization of whichever window is closest to its cap — that's the one that will stop you — colored with the same three thresholds. A window whose `resets_at` has passed carries no current information, so it contributes no number: if every window has reset, the badge text is blank and the tooltip says so. Full detail (both windows, countdowns, "as of Xm ago" when stale) lives in the tooltip. Clicking the badge focuses an existing claude.ai tab, or opens one.
+
+**Notifications (v1).** One line, no buttons, no sound beyond the OS default. Only fired for a window the user was actually near the cap on, at most once per reset, and never so late that "just reset" would be false. Clicking opens claude.ai. When in doubt, don't notify — a false ping costs more trust than a missed one.
 
 **Never disrupt Claude's UI.** Shadow DOM, `pointer-events: auto` only on the pill itself, `z-index` no higher than needed. If Claude opens a modal, we yield (badge stays put, doesn't fight).
 

@@ -16,9 +16,24 @@ Headroom.constants = {
     snapshotPrefix: 'snapshot:',
     latestOrgId: 'latestOrgId',
     badgePosition: 'badgePosition',
+    settings: 'settings',
+    // Last announced reset per org+window, so an alarm that fires twice (or a
+    // service-worker restart) can't double-ping.
+    notifyState: 'notifyState',
   },
 
   THRESHOLDS: { amber: 0.6, red: 0.85 },
+
+  DEFAULT_SETTINGS: { resetNotifications: true },
+
+  // Below this a "your window reset" notification is noise, not news.
+  NOTIFY_MIN_UTILIZATION: 0.85,
+  // Alarms don't fire while the browser is closed. A late ping is still useful
+  // for a while; past this, "just reset" would be false.
+  NOTIFY_MAX_LATE_MS: 30 * 60 * 1000,
+
+  // Same palette as the in-page pill (src/styles/badge.css).
+  BADGE_COLORS: { green: '#2f9e44', amber: '#e8a13c', red: '#d64545' },
 
   STALE_AFTER_MS: 5 * 60 * 1000,
   HISTORY_RETENTION_MS: 90 * 24 * 60 * 60 * 1000,

@@ -108,6 +108,51 @@ Headroom.storage = (() => {
     }
   }
 
+  // Every org's latest snapshot — the service worker needs all of them to
+  // schedule reset alarms, not just the most recent one.
+  async function loadAllSnapshots() {
+    try {
+      const all = await chrome.storage.local.get(null);
+      const out = [];
+      for (const [key, value] of Object.entries(all)) {
+        if (!key.startsWith(C.STORAGE_KEYS.snapshotPrefix)) continue;
+        const snap = validSnapshot(value);
+        if (snap) out.push(snap);
+      }
+      return out;
+    } catch {
+      return [];
+    }
+  }
+
+  async function loadSettings() {
+    try {
+      const got = await chrome.storage.local.get(C.STORAGE_KEYS.settings);
+      const stored = got[C.STORAGE_KEYS.settings];
+      return { ...C.DEFAULT_SETTINGS, ...(stored && typeof stored === 'object' ? stored : {}) };
+    } catch {
+      return { ...C.DEFAULT_SETTINGS };
+    }
+  }
+
+  async function loadNotifyState() {
+    try {
+      const got = await chrome.storage.local.get(C.STORAGE_KEYS.notifyState);
+      const state = got[C.STORAGE_KEYS.notifyState];
+      return state && typeof state === 'object' ? state : {};
+    } catch {
+      return {};
+    }
+  }
+
+  async function saveNotifyState(state) {
+    try {
+      await chrome.storage.local.set({ [C.STORAGE_KEYS.notifyState]: state });
+    } catch (err) {
+      console.warn('[headroom] notify state write failed:', err && err.message);
+    }
+  }
+
   async function loadBadgePosition() {
     try {
       const got = await chrome.storage.local.get(C.STORAGE_KEYS.badgePosition);
@@ -127,5 +172,15 @@ Headroom.storage = (() => {
     }
   }
 
-  return { saveSnapshot, loadSnapshot, loadLatest, loadBadgePosition, saveBadgePosition };
+  return {
+    saveSnapshot,
+    loadSnapshot,
+    loadLatest,
+    loadAllSnapshots,
+    loadSettings,
+    loadNotifyState,
+    saveNotifyState,
+    loadBadgePosition,
+    saveBadgePosition,
+  };
 })();
